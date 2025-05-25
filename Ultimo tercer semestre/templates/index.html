@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ruta más corta con Dijkstra</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Encuentra la Ruta Más Corta</h1>
+
+    <form method="POST" class="form">
+      <input name="inicio" placeholder="Nodo inicio (ej. A)" maxlength="1" required>
+      <input name="fin" placeholder="Nodo fin (ej. Z)" maxlength="1" required>
+      <button type="submit">Buscar Ruta</button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% if ruta %}
+      <div class="resultado">
+        <p><strong>Ruta:</strong> {{ ruta|join(' → ') }}</p>
+        <p><strong>Costo total:</strong> {{ costo }}</p>
+      </div>
+    {% endif %}
+
+    <div class="imagen">
+      <img src="{{ url_for('static', filename='grafo.png') }}" alt="Grafo generado con la ruta más corta">
+    </div>
+  </div>
+</body>
+</html>
