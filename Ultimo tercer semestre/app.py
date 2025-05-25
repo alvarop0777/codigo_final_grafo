@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, url_for
+import matplotlib
+matplotlib.use('Agg')  # <--- Esta línea evita los errores de tkinter
 import matplotlib.pyplot as plt
 import networkx as nx
 import os
