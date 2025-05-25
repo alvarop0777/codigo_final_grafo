@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import matplotlib.pyplot as plt
 import networkx as nx
 import os
+import uuid
 
 app = Flask(__name__)
 
@@ -10,6 +11,7 @@ def index():
     ruta = []
     costo = None
     error = None
+    img_filename = None
 
     if request.method == "POST":
         inicio = request.form["inicio"].upper()
@@ -55,7 +57,6 @@ def index():
 
             costo = dist[fin]
 
-            # Dibujo
             colores = []
             for u, v in G.edges():
                 if u in ruta and v in ruta and abs(ruta.index(u) - ruta.index(v)) == 1:
@@ -71,11 +72,13 @@ def index():
             plt.axis('off')
             plt.tight_layout()
 
-            # Guardar en static/
-            plt.savefig(os.path.join("static", "grafo.png"))
+            os.makedirs("static", exist_ok=True)
+            img_filename = f"grafo_{uuid.uuid4().hex}.png"
+            img_path = os.path.join("static", img_filename)
+            plt.savefig(img_path)
             plt.close()
 
-    return render_template("index.html", ruta=ruta, costo=costo, error=error)
+    return render_template("index.html", ruta=ruta, costo=costo, error=error, img_filename=img_filename)
 
 if __name__ == "__main__":
     app.run(debug=True)

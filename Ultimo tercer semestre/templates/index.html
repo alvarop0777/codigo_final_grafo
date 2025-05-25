@@ -26,9 +26,11 @@
       </div>
     {% endif %}
 
-    <div class="imagen">
-      <img src="{{ url_for('static', filename='grafo.png') }}" alt="Grafo generado con la ruta más corta">
-    </div>
+    {% if img_filename %}
+      <div class="imagen">
+        <img src="{{ url_for('static', filename=img_filename) }}" alt="Grafo generado con la ruta más corta">
+      </div>
+    {% endif %}
   </div>
 </body>
 </html>
