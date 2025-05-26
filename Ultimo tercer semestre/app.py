@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for
 import matplotlib
-matplotlib.use('Agg')  # <--- Esta línea evita los errores de tkinter
+matplotlib.use('Agg')  # Evita errores de tkinter
 import matplotlib.pyplot as plt
 import networkx as nx
 import os
@@ -74,11 +74,19 @@ def index():
             plt.axis('off')
             plt.tight_layout()
 
-            os.makedirs("static", exist_ok=True)
+            # Guardar imagen en carpeta static con ruta absoluta
+            static_dir = os.path.join(app.root_path, "static")
+            os.makedirs(static_dir, exist_ok=True)
             img_filename = f"grafo_{uuid.uuid4().hex}.png"
-            img_path = os.path.join("static", img_filename)
-            plt.savefig(img_path)
-            plt.close()
+            img_path = os.path.join(static_dir, img_filename)
+
+            try:
+                plt.savefig(img_path)
+                print(f"[✔] Imagen guardada: {img_path}")
+            except Exception as e:
+                print(f"[✘] Error al guardar la imagen: {e}")
+            finally:
+                plt.close()
 
     return render_template("index.html", ruta=ruta, costo=costo, error=error, img_filename=img_filename)
 
